@@ -1,0 +1,4 @@
+   0.014393222s  WARN Graph cache decoded but not reused: resolver, entry points, or plugins changed
+  5 entry points detected (2 package.json, 2 plugin, 1 default index)
+
+✓ No issues found (0.02s)

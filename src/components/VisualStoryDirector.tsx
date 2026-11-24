@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, Maximize2, ArrowRight } from 'lucide-react';
+import { Play, Pause, Maximize2 } from 'lucide-react';
 
 interface StoryNode {
   id: number;

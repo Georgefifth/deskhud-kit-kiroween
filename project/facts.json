@@ -1,0 +1,53 @@
+{
+  "project_name": "DESKHUD_OS (DeskHUD Kit)",
+  "last_updated": "2026-11-24",
+  "facts": [
+    {
+      "fact_id": "fact_clean_gate_latency",
+      "claim": "Kiro hook executes Oxlint AST check in 18ms and Fallow dead-code graph audit in 20ms with zero warnings and zero dead exports",
+      "status": "verified",
+      "evidence": [
+        "public/images/deskhud_front.svg"
+      ],
+      "allowed_in_video": true
+    },
+    {
+      "fact_id": "fact_skeleton_two_apps",
+      "claim": "One shared skeleton (packages/deskhud-skeleton) powers two distinct applications in separate folders (apps/pulse-hud and apps/scale-hud) verified by 250 Property-Based Test seeds",
+      "status": "verified",
+      "evidence": [
+        "public/models/deskhud_stack.svg"
+      ],
+      "allowed_in_video": true
+    },
+    {
+      "fact_id": "fact_real_world_parser_accuracy",
+      "claim": "Metric 3D dimension parser achieves 100% accuracy (18/18 cases) across ISO, Apple, AirAsia, Shopee, and adversarial inputs after fixing 3 initial edge cases (83.3% baseline)",
+      "status": "verified",
+      "evidence": [
+        "public/images/deskhud_front.svg"
+      ],
+      "allowed_in_video": true
+    },
+    {
+      "fact_id": "fact_momen_baas_persistence",
+      "claim": "Audit runs and 3D SKU twins persist in Momen PostgreSQL (projectExId BqvlMwgw2gA) and pass 10/10 Playwright real-browser scenarios across desktop and mobile",
+      "status": "verified",
+      "evidence": [
+        "public/models/deskhud_stack.svg"
+      ],
+      "allowed_in_video": true
+    },
+    {
+      "fact_id": "fact_unverified_photogrammetry",
+      "claim": "Single-image 360 neural radiance photogrammetry reconstruction",
+      "status": "unverified",
+      "evidence": [],
+      "allowed_in_video": false,
+      "forbidden_phrases": [
+        "360 neural radiance reconstruction",
+        "full photogrammetry from a single photo"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+
+■ Metrics: dead files 16.7% (2 of 12) · dead exports 12.5% (3 of 24) · MI 89.6 (good)
+  12 files analyzed
+  4 entry points detected (3 plugin, 1 default index)
+  2 refactoring targets: start with src/momenClient.ts (dead code)
+
+── Dead Code ──────────────────────────────────────
+
+── Unused Code ─────────────────────────────────────
+
+● Unused files (2)
+  qa/run.mjs
+  tests/real-world-dataset.mjs
+  Files not reachable from any entry point
+  https://fallow.tools/docs/rules/unused-file/
+
+● Unused exports (3)
+  src/momenClient.ts (3)
+    :5 MOMEN_PROJECT_EX_ID
+    :6 MOMEN_GRAPHQL_HTTP
+    :7 MOMEN_GRAPHQL_WS
+  Exported symbols with no known consumers
+  https://fallow.tools/docs/rules/unused-export/
+  To auto-fix: fallow fix --dry-run
+  To suppress: // fallow-ignore-next-line unused-export
+
+✗ 2 files · 3 exports (0.03s)
+
+── Duplication ────────────────────────────────────
+note: skipped 1 file matching default duplicates ignores
+  (--explain-skipped for the list)
+note: module wiring excluded from clones
+  (--dupes-no-ignore-imports to include it)
+
+● Duplicates (2 clone groups)
+
+     13 lines  2 instances  spread 1  dup:e92b065d
+    src/components/VisualStoryDirector.tsx:280-292
+    src/components/VisualStoryDirector.tsx:312-324
+
+     24 lines  2 instances  spread 4  dup:ecb5c6d1
+    apps/scale-hud/ScaleHudApp.tsx:359-382
+    src/components/VisualStoryDirector.tsx:92-114
+
+  Duplicate code blocks
+  https://fallow.tools/docs/explanations/duplication/#clone-groups
+
+⚠ 73 lines (2.5%) duplicated across 2 files (0.00s)
+
+── Complexity ─────────────────────────────────────
+
+■ Metrics: 3,041 LOC · dead files 16.7% · dead exports 12.5% · avg cyclomatic 2.8 · p90 cyclomatic 7 · maintainability 89.6 (good) · 0 churn hotspots (since 6 months)
+  Cyclomatic units: functions 142, module scopes 1, templates 0
+  Module scope: max cyclomatic 4; included in metrics, not function findings
+
+  Function size: 78% low · 10% medium · 4% high · 8% very high  (1-15 / 16-30 / 31-60 / >60 LOC)
+  Parameters:    97% low · 2% medium · 0% high · 1% very high  (0-2 / 3-4 / 5-6 / >=7 params)
+
+  Render fan-in: <PulseHudApp> 1 parent (1 incl. repeats) · <ScaleHudApp> 1 parent (1 incl. repeats) · <App> 1 parent (1 incl. repeats) · <VisualStoryDirector> 1 parent (1 incl. repeats)
+
+● Large functions (10 shown, 12 total)
+  apps/scale-hud/ScaleHudApp.tsx
+    :80 ScaleHudApp  678 lines
+  apps/pulse-hud/PulseHudApp.tsx
+    :106 PulseHudApp  441 lines
+  src/App.tsx
+    :10 App  353 lines
+  src/components/VisualStoryDirector.tsx
+    :72 VisualStoryDirector  315 lines
+  apps/scale-hud/ScaleHudApp.tsx
+    :133 <arrow>  227 lines
+  apps/pulse-hud/PulseHudApp.tsx
+    :150 <arrow>  142 lines
+    :159 render  129 lines
+  qa/run.mjs
+    :159 main  125 lines
+  apps/scale-hud/ScaleHudApp.tsx
+    :177 drawSolidBox   91 lines
+  src/momenClient.ts
+    :103 recordAuditRunToMomen   69 lines
+  Functions exceeding 60 lines of code (very high risk)
+  https://fallow.tools/docs/explanations/health/#unit-size
+  use --top 12 to see all
+
+● High complexity functions (12)
+  No coverage file found, so CRAP scores are a static estimate. Pass `--coverage <coverage-final.json>` for measured scores, or raise `health.maxCrap`.
+  apps/pulse-hud/PulseHudApp.tsx
+    :106 PulseHudApp CRITICAL
+          24 ! cyclomatic   29 ! cognitive  441 lines
+         react: 3 props, 6 hooks (3 state, 1 effect, 2 custom), max effect deps 5, JSX depth 6
+         148.4 ! CRAP
+  apps/scale-hud/ScaleHudApp.tsx
+    :80 ScaleHudApp CRITICAL
+          22 ! cyclomatic   39 ! cognitive  678 lines
+         react: 14 hooks (11 state, 1 effect, 2 custom), max effect deps 9, JSX depth 7
+         126.5 ! CRAP
+  packages/deskhud-skeleton/index.ts
+    :127 parseMetricDimensions
+          21 ! cyclomatic   16 ! cognitive   55 lines
+  src/App.tsx
+    :10 App CRITICAL
+          20   cyclomatic   25 ! cognitive  353 lines
+         react: 9 hooks (7 state, 2 effect), max effect deps 0, JSX depth 6
+         420.0 ! CRAP
+  src/components/VisualStoryDirector.tsx
+    :72 VisualStoryDirector CRITICAL
+          18   cyclomatic   18 ! cognitive  315 lines
+         react: 1 prop, 3 hooks (2 state, 1 effect), max effect deps 1, JSX depth 7
+         342.0 ! CRAP
+  qa/run.mjs
+    :159 main CRITICAL
+          13   cyclomatic   22 ! cognitive  125 lines
+         182.0 ! CRAP
+  apps/pulse-hud/PulseHudApp.tsx
+    :241 <arrow>
+          12   cyclomatic   12   cognitive   44 lines
+          43.1 ! CRAP
+  src/App.tsx
+    :43 onKeyDown CRITICAL
+          12   cyclomatic   11   cognitive   10 lines
+         156.0 ! CRAP
+  apps/pulse-hud/PulseHudApp.tsx
+    :195 <arrow>
+          10   cyclomatic   12   cognitive   44 lines
+          31.6 ! CRAP
+  packages/deskhud-skeleton/index.ts
+    :54 <arrow>
+          10   cyclomatic    9   cognitive   26 lines
+          31.6 ! CRAP
+  src/App.tsx
+    :57 handleBotSubmit CRITICAL
+          10   cyclomatic    6   cognitive   17 lines
+         110.0 ! CRAP
+  qa/run.mjs
+    :143 page.on("requestfailed")
+           5   cyclomatic    3   cognitive    6 lines
+          30.0 ! CRAP
+  Functions exceeding cyclomatic, cognitive, or CRAP thresholds; ! marks the
+  dimension that breached
+  https://fallow.tools/docs/explanations/health/#complexity-metrics
+  To suppress: // fallow-ignore-next-line complexity
+
+● File health scores (8 files) · sorted by triage concern
+
+   88.5    src/App.tsx                                     risk
+            363 LOC    1 fan-in    4 fan-out    0% dead  0.17 density  420.0 risk
+
+   97.3    src/components/VisualStoryDirector.tsx          risk
+            387 LOC    1 fan-in    0 fan-out    0% dead  0.09 density  342.0 risk
+
+   74.0    qa/run.mjs                                      risk
+            289 LOC    0 fan-in    0 fan-out  100% dead  0.20 density  182.0 risk
+
+   91.4    apps/pulse-hud/PulseHudApp.tsx                  risk
+            547 LOC    2 fan-in    2 fan-out    0% dead  0.14 density  148.4 risk
+
+   93.6    apps/scale-hud/ScaleHudApp.tsx                  risk
+            758 LOC    2 fan-in    1 fan-out    0% dead  0.12 density  126.5 risk
+
+   94.0    packages/deskhud-skeleton/index.ts              risk
+            270 LOC    3 fan-in    0 fan-out    0% dead  0.20 density  31.6 risk
+
+   87.0    src/momenClient.ts                              risk
+            172 LOC    2 fan-in    0 fan-out   50% dead  0.10 density  17.6 risk
+
+   90.9    tests/skeleton-pbt.test.mjs                     risk
+             74 LOC    0 fan-in    3 fan-out    0% dead  0.12 density  4.9 risk
+
+  Sorted by triage concern: the larger of low-MI concern and CRAP risk. The risk
+  / structure tag marks which one placed each file. MI reflects complexity,
+  coupling, and dead code; risk reflects untested complexity (CRAP) and can
+  diverge from MI. Risk: low <15, moderate 15-30, high >=30. CRAP scores are a
+  static estimate from export references (85% direct, 40% indirect, 0%
+  untested). Pass `--coverage <coverage-final.json>` for measured scores.
+  https://fallow.tools/docs/explanations/health/#file-health-scores
+
+● Refactoring targets (2)
+  1 medium · 1 high
+    score = quick-win ROI (higher = better) · pri = absolute priority
+
+    9.5  pri:19.0    src/momenClient.ts
+         dead code · effort:medium · confidence:high  Remove 3 unused exports to reduce surface area (50% dead)
+         importers: apps/pulse-hud/PulseHudApp.tsx (WsFrameLog, recordAuditRunToMomen); src/App.tsx (WsFrameLog, fetchLiveMomenAuditRuns, getSavedAuditRuns)
+
+    3.6  pri:10.9    apps/scale-hud/ScaleHudApp.tsx
+         complexity · effort:high · confidence:high  Extract ScaleHudApp (cognitive: 39) in 758-LOC file into smaller functions
+         importers: src/App.tsx (ScaleHudApp); tests/skeleton-pbt.test.mjs (default)
+         clones: src/components/VisualStoryDirector.tsx:92-114 dup:ecb5c6d1
+
+  Prioritized refactoring recommendations based on complexity, churn, and
+  coupling signals
+  https://fallow.tools/docs/explanations/health/#refactoring-targets
+
+✗ 12 above threshold · 142 analyzed · maintainability 89.6 (good) (0.01s)
+
+Failed: dead-code (5 issues), health (12 above threshold): start with src/momenClient.ts
+Setup: `npx fallow init` writes a config; `npx fallow agent install --dry-run` previews the agent guide, skills, MCP server, and commit gate (hide this hint: `npx fallow init --decline`).

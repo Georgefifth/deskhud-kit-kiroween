@@ -3,7 +3,7 @@ import { PulseHudApp } from '../apps/pulse-hud/PulseHudApp';
 import { ScaleHudApp } from '../apps/scale-hud/ScaleHudApp';
 import { VisualStoryDirector } from './components/VisualStoryDirector';
 import { getSavedAuditRuns, fetchLiveMomenAuditRuns, type WsFrameLog } from './momenClient';
-import { Mic, Terminal, Cpu, Box, Compass, Sparkles } from 'lucide-react';
+import { Mic } from 'lucide-react';
 
 type ActiveWorkspace = 'pulse-hud' | 'scale-hud' | 'story-rig';
 
@@ -73,7 +73,6 @@ export const App: React.FC = () => {
   };
 
   const healthScore = isHealed ? 98 : 52;
-  const savedRuns = getSavedAuditRuns();
 
   return (
     <div
@@ -92,13 +91,16 @@ export const App: React.FC = () => {
     >
       <style>{`
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; background: #050608; overflow: hidden; }
+        html, body { margin: 0; padding: 0; background: #050608; overflow: hidden; max-width: 100vw; }
+        .deskhud-stage > div > div { min-width: 0; max-width: 100%; }
         @media (max-width: 920px) {
-          body { overflow-x: hidden; overflow-y: auto; }
-          .deskhud-shell { width: 100% !important; height: auto !important; min-height: 100vh !important; overflow: visible !important; }
-          .deskhud-stage { overflow: visible !important; height: auto !important; }
-          .deskhud-stage > div { grid-template-columns: 1fr !important; height: auto !important; }
-          .deskhud-pill { flex-wrap: wrap !important; width: 100% !important; justify-content: center !important; }
+          html, body { overflow-x: hidden !important; overflow-y: auto !important; width: 100% !important; }
+          .deskhud-shell { width: 100% !important; max-width: 100vw !important; height: auto !important; min-height: 100vh !important; overflow-x: hidden !important; overflow-y: visible !important; }
+          .deskhud-stage { overflow-x: hidden !important; overflow-y: visible !important; height: auto !important; padding: 8px 10px !important; }
+          .deskhud-stage > div { grid-template-columns: minmax(0, 1fr) !important; height: auto !important; }
+          .deskhud-pill { flex-wrap: wrap !important; width: 100% !important; max-width: 100% !important; justify-content: center !important; }
+          .deskhud-footer { height: auto !important; padding: 8px 10px !important; flex-wrap: wrap !important; gap: 6px !important; }
+          .deskhud-footer > div { white-space: normal !important; flex-wrap: wrap !important; max-width: 100% !important; }
         }
       `}</style>
 
@@ -328,6 +330,7 @@ export const App: React.FC = () => {
 
       {/* BOTTOM WIRE TELEMETRY BAR: .kiro/hooks + Momen GraphQL/WebSocket Wire Frame Stream */}
       <footer
+        className="deskhud-footer"
         style={{
           height: '34px',
           background: '#090C12',

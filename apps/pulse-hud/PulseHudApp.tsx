@@ -5,7 +5,7 @@ import {
   type DependencyEdge
 } from '../../packages/deskhud-skeleton';
 import { recordAuditRunToMomen, type WsFrameLog } from '../../src/momenClient';
-import { Sparkles, RotateCcw, ShieldAlert, ShieldCheck, Terminal, Cpu } from 'lucide-react';
+import { Sparkles, RotateCcw } from 'lucide-react';
 
 const DIRTY_NODES: ModuleNode[] = [
   { id: 'hudView', label: 'hudView.tsx', layer: 'ui', x: 0.22, y: 0.28, cyclomatic: 9, cognitive: 14, deadExports: ['legacyBadgeStyle'], hasRustUnwrap: false, loc: 142 },

@@ -122,32 +122,48 @@ export interface ParseMetricResult {
 
 /**
  * Deterministic metric dimension parser (`1 unit = 1 mm`).
+ * Supports per-axis units (e.g. `18cm x 120mm x 7cm`), Unicode `×`, and ignores model/HTML prefixes.
  */
 export function parseMetricDimensions(raw: string): ParseMetricResult {
-  const cleaned = raw.trim();
-  if (!cleaned) {
+  const stripped = raw.replace(/<[^>]*>/g, ' ').trim();
+  if (!stripped) {
     return { ok: false, error: 'EMPTY_INPUT: Provide L×W×H in mm, cm, or in' };
   }
-  if (/-\d/.test(cleaned)) {
+  if (/(?:^|\s|x|\*|×)-\d/i.test(stripped)) {
     return { ok: false, error: 'NEGATIVE_DIMENSION: Physical dimensions must be > 0mm' };
   }
 
-  const nums = cleaned.match(/(\d+(?:\.\d+)?)/g);
-  if (!nums || nums.length < 3) {
-    return { ok: false, error: 'INVALID_FORMAT: Expected 3 numeric axes (e.g. 18x12x7 cm)' };
-  }
-
-  const unit: 'mm' | 'cm' | 'in' =
-    /\bin(?:ch|ches)?\b/i.test(cleaned)
+  const fallbackUnit: 'mm' | 'cm' | 'in' =
+    /\bin(?:ch|ches)?\b/i.test(stripped)
       ? 'in'
-      : /\bmm\b/i.test(cleaned)
+      : /\bmm\b/i.test(stripped) && !/\bcm\b/i.test(stripped)
       ? 'mm'
       : 'cm';
 
-  const factor = unit === 'mm' ? 1 : unit === 'cm' ? 10 : 25.4;
-  const w = Math.round(parseFloat(nums[0]) * factor);
-  const h = Math.round(parseFloat(nums[1]) * factor);
-  const d = Math.round(parseFloat(nums[2]) * factor);
+  const unitToFactor = (u: string | undefined): number => {
+    const norm = (u || fallbackUnit).toLowerCase();
+    if (norm.startsWith('mm')) return 1;
+    if (norm.startsWith('in')) return 25.4;
+    return 10;
+  };
+
+  // Match explicit 3-axis triplet separated by x, *, ×, or axis labels
+  const tripletRegex =
+    /(\d+(?:\.\d+)?)\s*(mm|cm|in(?:ches|ch)?)?\s*(?:x|\*|×)\s*(?:[a-zA-Z]+\s*)?(\d+(?:\.\d+)?)\s*(mm|cm|in(?:ches|ch)?)?\s*(?:x|\*|×)\s*(?:[a-zA-Z]+\s*)?(\d+(?:\.\d+)?)\s*(mm|cm|in(?:ches|ch)?)?/i;
+
+  const triplet = stripped.match(tripletRegex);
+  if (!triplet) {
+    return { ok: false, error: 'INVALID_FORMAT: Expected 3 numeric axes (e.g. 18x12x7 cm)' };
+  }
+
+  const trailingUnit = triplet[6] || triplet[4] || triplet[2] || fallbackUnit;
+  const f1 = unitToFactor(triplet[2] || trailingUnit);
+  const f2 = unitToFactor(triplet[4] || trailingUnit);
+  const f3 = unitToFactor(triplet[6] || trailingUnit);
+
+  const w = Math.round(parseFloat(triplet[1]) * f1);
+  const h = Math.round(parseFloat(triplet[3]) * f2);
+  const d = Math.round(parseFloat(triplet[5]) * f3);
 
   if (w <= 0 || h <= 0 || d <= 0 || w > 3000 || h > 3000 || d > 3000) {
     return { ok: false, error: 'OUT_OF_RANGE: Each axis must be between 1mm and 3000mm' };
@@ -156,7 +172,11 @@ export function parseMetricDimensions(raw: string): ParseMetricResult {
   return {
     ok: true,
     box: { widthMm: w, heightMm: h, depthMm: d },
-    unitDetected: unit
+    unitDetected: trailingUnit.toLowerCase().startsWith('mm')
+      ? 'mm'
+      : trailingUnit.toLowerCase().startsWith('in')
+      ? 'in'
+      : 'cm'
   };
 }
 

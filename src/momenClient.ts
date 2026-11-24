@@ -2,9 +2,8 @@
 // Momen Headless BaaS Runtime GraphQL + Legacy `subscriptions-transport-ws` Client
 // Connected to live Momen Project: BqvlMwgw2gA (DeskHUD-Kiroween)
 
-export const MOMEN_PROJECT_EX_ID = 'BqvlMwgw2gA';
-export const MOMEN_GRAPHQL_HTTP = `https://villa.momen.app/zero/${MOMEN_PROJECT_EX_ID}/api/graphql-v2`;
-export const MOMEN_GRAPHQL_WS = `wss://villa.momen.app/zero/${MOMEN_PROJECT_EX_ID}/api/graphql-subscription`;
+const MOMEN_PROJECT_EX_ID = 'BqvlMwgw2gA';
+const MOMEN_GRAPHQL_HTTP = `https://villa.momen.app/zero/${MOMEN_PROJECT_EX_ID}/api/graphql-v2`;
 
 export interface WsFrameLog {
   id: string;

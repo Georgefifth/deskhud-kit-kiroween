@@ -1,0 +1,17 @@
+src/components/VisualStoryDirector.tsx:2:34: warning eslint(no-unused-vars): Identifier 'ArrowRight' is imported but never used. help: Consider removing this import.
+apps/scale-hud/ScaleHudApp.tsx:7:10: warning eslint(no-unused-vars): Identifier 'Box' is imported but never used. help: Consider removing this import.
+apps/scale-hud/ScaleHudApp.tsx:7:15: warning eslint(no-unused-vars): Identifier 'Layers' is imported but never used. help: Consider removing this import.
+apps/scale-hud/ScaleHudApp.tsx:7:23: warning eslint(no-unused-vars): Identifier 'PackageCheck' is imported but never used. help: Consider removing this import.
+apps/scale-hud/ScaleHudApp.tsx:7:37: warning eslint(no-unused-vars): Identifier 'RotateCw' is imported but never used. help: Consider removing this import.
+apps/scale-hud/ScaleHudApp.tsx:7:47: warning eslint(no-unused-vars): Identifier 'Sliders' is imported but never used. help: Consider removing this import.
+apps/scale-hud/ScaleHudApp.tsx:88:23: warning eslint(no-unused-vars): Variable 'setPitchFactor' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration.
+src/App.tsx:6:15: warning eslint(no-unused-vars): Identifier 'Terminal' is imported but never used. help: Consider removing this import.
+src/App.tsx:6:25: warning eslint(no-unused-vars): Identifier 'Cpu' is imported but never used. help: Consider removing this import.
+src/App.tsx:6:30: warning eslint(no-unused-vars): Identifier 'Box' is imported but never used. help: Consider removing this import.
+src/App.tsx:6:35: warning eslint(no-unused-vars): Identifier 'Compass' is imported but never used. help: Consider removing this import.
+src/App.tsx:6:44: warning eslint(no-unused-vars): Identifier 'Sparkles' is imported but never used. help: Consider removing this import.
+src/App.tsx:76:9: warning eslint(no-unused-vars): Variable 'savedRuns' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration.
+apps/pulse-hud/PulseHudApp.tsx:8:31: warning eslint(no-unused-vars): Identifier 'ShieldAlert' is imported but never used. help: Consider removing this import.
+apps/pulse-hud/PulseHudApp.tsx:8:44: warning eslint(no-unused-vars): Identifier 'ShieldCheck' is imported but never used. help: Consider removing this import.
+apps/pulse-hud/PulseHudApp.tsx:8:57: warning eslint(no-unused-vars): Identifier 'Terminal' is imported but never used. help: Consider removing this import.
+apps/pulse-hud/PulseHudApp.tsx:8:67: warning eslint(no-unused-vars): Identifier 'Cpu' is imported but never used. help: Consider removing this import.

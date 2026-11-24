@@ -1,0 +1,410 @@
+{
+  "project_name": "DESKHUD_OS · DeskHUD Kit",
+  "tagline": "One Rust/Tauri & Web Spatial HUD Skeleton, Two Apps — Built with Kiro",
+  "preset": "dark-premium",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "bgm": "cyber-pulse",
+  "scenes": [
+    {
+      "scene_id": "opening",
+      "kicker": "KIROWEEN 2026 · SKELETON CREW",
+      "title": "DESKHUD_OS · One Spatial HUD Skeleton, Two Apps",
+      "subtitle": "Cross-platform Rust/Tauri v2 & WebGPU skeleton guarded by Oxlint, Vite+, Fallow, and Kiro Hooks",
+      "duration": 9.78,
+      "narration": "DeskHUD OS turns one 'Kiro Skeleton' into two spatial HUD apps with 18ms Oxlint verification.",
+      "visual_type": "opening_title",
+      "fact_ids": [
+        "fact_skeleton_two_apps",
+        "fact_clean_gate_latency"
+      ],
+      "assets": [
+        "images/deskhud_front.svg"
+      ],
+      "badges": [
+        "18ms OXLINT AST GATE",
+        "0 FALLOW DEAD CODE",
+        "250/250 PBT SEEDS"
+      ],
+      "animations": [
+        {
+          "type": "highlight",
+          "target": "HANDY PILL",
+          "text": "Handy-Style Global Pill (Alt+Space)",
+          "subtext": "Instant mode switch & local Whisper bot",
+          "start": 1.04,
+          "duration": 7.17,
+          "x": 50,
+          "y": 18,
+          "w": 46,
+          "h": 18
+        }
+      ],
+      "audio_file": "audio/opening.mp3",
+      "captions": [
+        {
+          "start": 0.05,
+          "end": 8.26,
+          "text": "DeskHUD OS turns one 'Kiro Skeleton' into two spatial HUD apps with 18ms Oxlint verification."
+        }
+      ]
+    },
+    {
+      "scene_id": "problem",
+      "kicker": "PROBLEM ANALYSIS",
+      "title": "Why Unsteered Agent Code & 2D Studio Photos Deceive",
+      "subtitle": "AI vibe-coding introduces circular dependencies; flat 2D listings hide real millimeter scale",
+      "duration": 10.84,
+      "narration": "Unsteered agents create 'circular dependencies', while flat 2D product photos deceive online shoppers on real physical scale.",
+      "visual_type": "problem_flow",
+      "fact_ids": [
+        "fact_clean_gate_latency",
+        "fact_real_world_parser_accuracy"
+      ],
+      "animations": [
+        {
+          "type": "highlight",
+          "target": "step_manual",
+          "text": "3-Node Circular Dependency & Unwrap Panic",
+          "start": 1.35,
+          "duration": 4.34
+        },
+        {
+          "type": "highlight",
+          "target": "step_cloud",
+          "text": "2D Macro Photo Size Trap (120mm Tote)",
+          "start": 5.69,
+          "duration": 4.34
+        }
+      ],
+      "audio_file": "audio/problem.mp3",
+      "captions": [
+        {
+          "start": 0.05,
+          "end": 9.25,
+          "text": "Unsteered agents create 'circular dependencies', while flat 2D product photos deceive online shoppers on real physical scale."
+        }
+      ]
+    },
+    {
+      "scene_id": "exploded_architecture",
+      "kicker": "SKELETON CREW ARCHITECTURE",
+      "title": "Four-Layer DeskHUD Skeleton & Kiro Clean-Code Stack",
+      "subtitle": "Handy shortcut pill, Oxlint + Fallow DAG gate, shared 1mm spatial core, and Momen PostgreSQL BaaS",
+      "duration": 10.53,
+      "narration": "Our four-layer 'DeskHUD Skeleton' pairs Oxlint and Fallow graph guards with a 1-millimeter spatial engine and Momen PostgreSQL.",
+      "visual_type": "exploded_view",
+      "fact_ids": [
+        "fact_skeleton_two_apps",
+        "fact_momen_baas_persistence"
+      ],
+      "assets": [
+        "models/deskhud_stack.svg"
+      ],
+      "exploded_parts": [
+        {
+          "id": "handy_pill",
+          "name": "L3 · Handy Shortcut & Voice Pill",
+          "spec": "ALT+SPACE · LOCAL WHISPER STT",
+          "role": "Summons ambient desktop HUD overlay without leaving active window",
+          "layer": -1.5
+        },
+        {
+          "id": "clean_gate",
+          "name": "L2 · Agentic Clean-Code Gate",
+          "spec": "OXLINT 18ms · FALLOW DAG 20ms",
+          "role": "Blocks circular dependencies, dead exports, and Rust unwrap panics via .kiro/hooks",
+          "layer": -0.5
+        },
+        {
+          "id": "skeleton_core",
+          "name": "L1 · Shared Skeleton Core",
+          "spec": "packages/deskhud-skeleton · 250 PBT",
+          "role": "Provides force-graph analyzer, 1mm dimension parser, and 3D AABB bin packer",
+          "layer": 0.5
+        },
+        {
+          "id": "momen_baas",
+          "name": "L0 · Rust Specta IPC & Momen BaaS",
+          "spec": "PROJECT BqvlMwgw2gA · GRAPHQL",
+          "role": "Type-safe Rust Tauri v2 bindings paired with cloud PostgreSQL persistence",
+          "layer": 1.5
+        }
+      ],
+      "animations": [
+        {
+          "type": "explode",
+          "target": "assembly",
+          "start": 0.47,
+          "duration": 9.36
+        },
+        {
+          "type": "highlight",
+          "target": "clean_gate",
+          "text": "18ms Oxlint + 20ms Fallow Hook Gate",
+          "start": 1.4,
+          "duration": 4.09
+        },
+        {
+          "type": "label",
+          "target": "skeleton_core",
+          "text": "1 Skeleton -> 2 Separate App Folders",
+          "start": 5.62,
+          "duration": 4.09
+        }
+      ],
+      "audio_file": "audio/exploded_architecture.mp3",
+      "captions": [
+        {
+          "start": 0.05,
+          "end": 8.97,
+          "text": "Our four-layer 'DeskHUD Skeleton' pairs Oxlint and Fallow graph guards with a 1-millimeter spatial engine and Momen PostgreSQL."
+        }
+      ]
+    },
+    {
+      "scene_id": "live_pulse_hud",
+      "kicker": "APP 1 · apps/pulse-hud",
+      "title": "PulseHUD: Live Force-Graph & 1-Click Kiro Hook Heal",
+      "subtitle": "Severs 3-node circular dependency and commits audit run to Momen PostgreSQL",
+      "duration": 10.94,
+      "narration": "In App 1 'PulseHUD', clicking Heal via Kiro Hook breaks the 3-node cycle and raises Fallow health from 52 to 98.",
+      "visual_type": "real_footage_with_annotations",
+      "fact_ids": [
+        "fact_clean_gate_latency",
+        "fact_momen_baas_persistence"
+      ],
+      "assets": [
+        "footage/live_live_pulse_hud.mp4",
+        "images/deskhud_front.svg"
+      ],
+      "live_capture": {
+        "url": "https://kiro-hackathon-lake.vercel.app",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 1200,
+            "__focus": null
+          },
+          {
+            "type": "click",
+            "sel": "[data-testid=\"pulse-heal-btn\"]",
+            "__focus": [
+              1409.4,
+              92.2
+            ]
+          },
+          {
+            "type": "wait",
+            "ms": 3200,
+            "__focus": null
+          }
+        ]
+      },
+      "animations": [
+        {
+          "type": "highlight",
+          "target": "CYCLE_HEAL",
+          "text": "Kiro Hook: 3 Cycles -> 0 Cycles (DAG Clean)",
+          "subtext": "Committed to Momen PostgreSQL (BqvlMwgw2gA)",
+          "start": 1.15,
+          "duration": 4.84,
+          "x": 38,
+          "y": 48,
+          "w": 42,
+          "h": 44
+        },
+        {
+          "type": "label",
+          "target": "AST_INSPECTOR",
+          "text": "Oxlint 18ms · Cognitive 34 -> 6",
+          "subtext": "Specta Type-Safe Rust IPC verified",
+          "start": 5.53,
+          "duration": 4.61,
+          "x": 82,
+          "y": 52,
+          "w": 28,
+          "h": 44
+        }
+      ],
+      "audio_file": "audio/live_pulse_hud.mp3",
+      "captions": [
+        {
+          "start": 0.05,
+          "end": 9.37,
+          "text": "In App 1 'PulseHUD', clicking Heal via Kiro Hook breaks the 3-node cycle and raises Fallow health from 52 to 98."
+        }
+      ]
+    },
+    {
+      "scene_id": "live_scale_hud",
+      "kicker": "APP 2 · apps/scale-hud",
+      "title": "ScaleHUD 3D: 1:1 Millimeter Comparator & PackFit 3D",
+      "subtitle": "Extrudes 2D Shopee specs against a 330ml soda can and packs cabin luggage in 3D",
+      "duration": 13.02,
+      "narration": "In App 2 'ScaleHUD', we extrude custom dimensions against a 330ml can, pack a 3D camera cube, and inspect exploded CAD tolerances.",
+      "visual_type": "real_footage_with_annotations",
+      "fact_ids": [
+        "fact_real_world_parser_accuracy",
+        "fact_skeleton_two_apps"
+      ],
+      "assets": [
+        "footage/live_live_scale_hud.mp4",
+        "images/deskhud_front.svg"
+      ],
+      "live_capture": {
+        "url": "https://kiro-hackathon-lake.vercel.app",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 700,
+            "__focus": null
+          },
+          {
+            "type": "click",
+            "sel": "[data-testid=\"nav-scale-hud\"]",
+            "__focus": [
+              892.3,
+              28.9
+            ]
+          },
+          {
+            "type": "wait",
+            "ms": 1800,
+            "__focus": null
+          },
+          {
+            "type": "click",
+            "sel": "[data-testid=\"scale-submode-packfit\"]",
+            "__focus": [
+              278.6,
+              92.6
+            ]
+          },
+          {
+            "type": "wait",
+            "ms": 1800,
+            "__focus": null
+          },
+          {
+            "type": "click",
+            "sel": "[data-testid=\"scale-submode-rig\"]",
+            "__focus": [
+              472.9,
+              94.1
+            ]
+          },
+          {
+            "type": "wait",
+            "ms": 2200,
+            "__focus": null
+          }
+        ]
+      },
+      "animations": [
+        {
+          "type": "highlight",
+          "target": "SCALE_STAGE",
+          "text": "1:1 Millimeter 3D Stage & Laser Calipers",
+          "subtext": "180x120x70mm Tote vs 330ml Soda Can & iPhone 16",
+          "start": 0.99,
+          "duration": 5.21,
+          "x": 38,
+          "y": 54,
+          "w": 46,
+          "h": 44
+        },
+        {
+          "type": "label",
+          "target": "PACKFIT_BOX",
+          "text": "PackFit 3D Volumetric Packer & Exploded CAD",
+          "subtext": "26% Utilization · +80mm Top Clearance",
+          "start": 6.45,
+          "duration": 5.58,
+          "x": 42,
+          "y": 54,
+          "w": 44,
+          "h": 44
+        }
+      ],
+      "audio_file": "audio/live_scale_hud.mp3",
+      "captions": [
+        {
+          "start": 0.05,
+          "end": 11.43,
+          "text": "In App 2 'ScaleHUD', we extrude custom dimensions against a 330ml can, pack a 3D camera cube, and inspect exploded CAD tolerances."
+        }
+      ]
+    },
+    {
+      "scene_id": "validation",
+      "kicker": "STAGE 3.5 REAL-WORLD VALIDATION",
+      "title": "Empirical Benchmarks & Honest Scope Boundaries",
+      "subtitle": "18 real-world dataset cases (ISO, Apple, AirAsia, Shopee) + 250 Kiro PBT seeds",
+      "duration": 11.78,
+      "narration": "Real-world validation reached 100% accuracy across 18 dataset cases after fixing 3 mixed-unit and prefix edge cases.",
+      "visual_type": "technical_validation",
+      "fact_ids": [
+        "fact_real_world_parser_accuracy",
+        "fact_clean_gate_latency"
+      ],
+      "metrics": [
+        {
+          "id": "parser_acc",
+          "label": "Real-World Parser Accuracy (18 Cases)",
+          "value": 100,
+          "unit": "%",
+          "baseline": 83.3,
+          "status": "verified"
+        },
+        {
+          "id": "oxlint_speed",
+          "label": "Oxlint AST Hook Latency",
+          "value": 18,
+          "unit": "ms",
+          "baseline": 850,
+          "status": "verified"
+        }
+      ],
+      "limitations": [
+        "2.5D relief hull extruded from single 2D listing; unseen rear texture requires multi-view capture",
+        "Vulgar fraction imperial strings (e.g. 9 1/2 in) require decimal notation (9.5 in)"
+      ],
+      "audio_file": "audio/validation.mp3",
+      "captions": [
+        {
+          "start": 0.05,
+          "end": 10.21,
+          "text": "Real-world validation reached 100% accuracy across 18 dataset cases after fixing 3 mixed-unit and prefix edge cases."
+        }
+      ]
+    },
+    {
+      "scene_id": "closing",
+      "kicker": "KIROWEEN 2026 · SKELETON CREW SUBMISSION",
+      "title": "DESKHUD_OS · Lean Skeleton, Two Spatial Apps",
+      "subtitle": "Open-source MIT repo with /.kiro specs, hooks, steering, 250 PBT seeds & Momen BaaS",
+      "duration": 8.58,
+      "narration": "DeskHUD OS: one Kiro-steered skeleton, two spatial apps, verified end to end.",
+      "visual_type": "closing_summary",
+      "fact_ids": [
+        "fact_skeleton_two_apps",
+        "fact_momen_baas_persistence"
+      ],
+      "badges": [
+        "SKELETON::packages/deskhud-skeleton",
+        "2 APPS::apps/pulse-hud + apps/scale-hud",
+        "LIVE::kiro-hackathon-lake.vercel.app"
+      ],
+      "audio_file": "audio/closing.mp3",
+      "captions": [
+        {
+          "start": 0.05,
+          "end": 7.02,
+          "text": "DeskHUD OS: one Kiro-steered skeleton, two spatial apps, verified end to end."
+        }
+      ]
+    }
+  ]
+}

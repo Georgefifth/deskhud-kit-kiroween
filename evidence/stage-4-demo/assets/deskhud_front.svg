@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#050608"/>
+  <g stroke="rgba(0,240,255,0.12)" stroke-width="1">
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="500"/>
+    <line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+  </g>
+  <!-- Handy Pill -->
+  <rect x="180" y="34" width="440" height="48" fill="#090C12" stroke="#00F0FF" stroke-width="2"/>
+  <circle cx="210" cy="58" r="7" fill="#10B981"/>
+  <text x="230" y="63" fill="#E2F1FF" font-family="monospace" font-size="15" font-weight="bold">DESKHUD_OS // ALT+SPACE · FALLOW 98/100</text>
+  <!-- Left: PulseHUD DAG -->
+  <rect x="45" y="115" width="335" height="330" fill="#090C12" stroke="rgba(0,240,255,0.35)" stroke-width="1.5"/>
+  <text x="65" y="145" fill="#00F0FF" font-family="monospace" font-size="13" font-weight="bold">APP 1 // apps/pulse-hud (DAG CLEAN)</text>
+  <line x1="120" y1="220" x2="260" y2="200" stroke="#10B981" stroke-width="2.5"/>
+  <line x1="260" y1="200" x2="220" y2="340" stroke="#10B981" stroke-width="2.5"/>
+  <line x1="120" y1="220" x2="220" y2="340" stroke="#00F0FF" stroke-width="2"/>
+  <circle cx="120" cy="220" r="28" fill="#050608" stroke="#00F0FF" stroke-width="2.5"/>
+  <text x="120" y="224" text-anchor="middle" fill="#E2F1FF" font-family="monospace" font-size="11">UI C:5</text>
+  <circle cx="260" cy="200" r="32" fill="#050608" stroke="#10B981" stroke-width="2.5"/>
+  <text x="260" y="204" text-anchor="middle" fill="#10B981" font-family="monospace" font-size="11">CTRL C:6</text>
+  <circle cx="220" cy="340" r="28" fill="#050608" stroke="#10B981" stroke-width="2.5"/>
+  <text x="220" y="344" text-anchor="middle" fill="#E2F1FF" font-family="monospace" font-size="11">IPC C:3</text>
+  <!-- Right: ScaleHUD 3D -->
+  <rect x="420" y="115" width="335" height="330" fill="#090C12" stroke="rgba(16,185,129,0.35)" stroke-width="1.5"/>
+  <text x="440" y="145" fill="#10B981" font-family="monospace" font-size="13" font-weight="bold">APP 2 // apps/scale-hud (1:1 MM 3D)</text>
+  <polygon points="480,230 570,195 610,220 520,255" fill="rgba(0,240,255,0.28)" stroke="#00F0FF" stroke-width="2"/>
+  <polygon points="480,230 520,255 520,355 480,330" fill="rgba(0,240,255,0.18)" stroke="#00F0FF" stroke-width="2"/>
+  <polygon points="520,255 610,220 610,320 520,355" fill="rgba(0,240,255,0.38)" stroke="#00F0FF" stroke-width="2"/>
+  <rect x="645" y="245" width="54" height="92" fill="rgba(255,51,102,0.35)" stroke="#FF3366" stroke-width="2"/>
+  <text x="545" y="395" text-anchor="middle" fill="#00F0FF" font-family="monospace" font-size="12">180×120×70MM vs 330ML CAN</text>
+</svg>

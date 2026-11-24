@@ -4,7 +4,6 @@ import {
   packVolumetricContainer,
   type MetricBox3D
 } from '../../packages/deskhud-skeleton';
-import { Box, Layers, PackageCheck, RotateCw, Sliders } from 'lucide-react';
 
 interface SkuPreset extends MetricBox3D {
   marketplace: string;
@@ -85,7 +84,7 @@ export const ScaleHudApp: React.FC = () => {
   const [boxDims, setBoxDims] = useState({ widthMm: 180, heightMm: 120, depthMm: 70 });
 
   const [yawDeg, setYawDeg] = useState(32);
-  const [pitchFactor, setPitchFactor] = useState(0.46);
+  const pitchFactor = 0.46;
   const [explodePct, setExplodePct] = useState(55);
   const [activeRefs, setActiveRefs] = useState<string[]>(['can330', 'iphone16']);
   const [selectedContainer, setSelectedContainer] = useState(CONTAINERS[0]);

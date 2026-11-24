@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { REAL_WORLD_DATASET } from './real-world-dataset.mjs';
 
 // Load TypeScript source via simple strip or verify compiled module behavior
 const skeletonSrc = fs.readFileSync(
@@ -70,4 +71,9 @@ test('Property-Based Test (PBT): 250 random metric dimension strings preserve 1c
     assert.equal(fromCm.h, fromMm.h, `Seed #${i} height mismatch`);
     assert.equal(fromCm.d, fromMm.d, `Seed #${i} depth mismatch`);
   }
+});
+
+test('Real-World Validation Regression: All 18 dataset cases exist and carry valid ground-truth contracts', () => {
+  assert.equal(REAL_WORLD_DATASET.length, 18);
+  assert.ok(REAL_WORLD_DATASET.every((tc) => typeof tc.input === 'string' && typeof tc.expectedOk === 'boolean'));
 });
