@@ -177,6 +177,7 @@
       ],
       "assets": [
         "footage/live_live_pulse_hud.mp4",
+        "footage/live_live_pulse_hud.mp4",
         "images/deskhud_front.svg"
       ],
       "live_capture": {
@@ -191,8 +192,8 @@
             "type": "click",
             "sel": "[data-testid=\"pulse-heal-btn\"]",
             "__focus": [
-              1409.4,
-              92.2
+              1381.7,
+              91.7
             ]
           },
           {
@@ -251,6 +252,7 @@
       ],
       "assets": [
         "footage/live_live_scale_hud.mp4",
+        "footage/live_live_scale_hud.mp4",
         "images/deskhud_front.svg"
       ],
       "live_capture": {
@@ -265,8 +267,8 @@
             "type": "click",
             "sel": "[data-testid=\"nav-scale-hud\"]",
             "__focus": [
-              892.3,
-              28.9
+              877.6,
+              25.6
             ]
           },
           {

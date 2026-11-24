@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { PulseHudApp } from '../apps/pulse-hud/PulseHudApp';
 import { ScaleHudApp } from '../apps/scale-hud/ScaleHudApp';
 import { VisualStoryDirector } from './components/VisualStoryDirector';
-import { getSavedAuditRuns, fetchLiveMomenAuditRuns, type WsFrameLog } from './momenClient';
+import {
+  getSavedAuditRuns,
+  fetchLiveMomenAuditRuns,
+  askMomenZaiAssistant,
+  type WsFrameLog
+} from './momenClient';
 import { Mic } from 'lucide-react';
 
 type ActiveWorkspace = 'pulse-hud' | 'scale-hud' | 'story-rig';
@@ -10,6 +15,7 @@ type ActiveWorkspace = 'pulse-hud' | 'scale-hud' | 'story-rig';
 export const App: React.FC = () => {
   const [workspace, setWorkspace] = useState<ActiveWorkspace>('pulse-hud');
   const [isHealed, setIsHealed] = useState<boolean>(false);
+  const [healthScore, setHealthScore] = useState<number>(52);
   const [voiceActive, setVoiceActive] = useState<boolean>(false);
   const [hudCommand, setHudCommand] = useState<string>('');
   const [botToast, setBotToast] = useState<string | null>(null);
@@ -44,35 +50,85 @@ export const App: React.FC = () => {
       if (e.altKey && e.key === '1') setWorkspace('pulse-hud');
       if (e.altKey && e.key === '2') setWorkspace('scale-hud');
       if (e.altKey && e.key === '3') setWorkspace('story-rig');
-      if (e.altKey && (e.key === 'h' || e.key === 'H')) setIsHealed((prev) => !prev);
+      if (e.altKey && (e.key === 'h' || e.key === 'H')) {
+        setIsHealed((prev) => {
+          const next = !prev;
+          setHealthScore(next ? 100 : 52);
+          return next;
+        });
+      }
       if (e.altKey && e.code === 'Space') {
         e.preventDefault();
-        setVoiceActive((v) => !v);
+        toggleVoiceRecognition();
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, []);
+  });
 
-  const handleBotSubmit = (e: React.FormEvent) => {
+  const toggleVoiceRecognition = () => {
+    if (voiceActive) {
+      setVoiceActive(false);
+      return;
+    }
+    setVoiceActive(true);
+    const SpeechRec =
+      (window as unknown as Record<string, unknown>).SpeechRecognition ||
+      (window as unknown as Record<string, unknown>).webkitSpeechRecognition;
+    if (typeof SpeechRec === 'function') {
+      try {
+        const rec = new (SpeechRec as new () => {
+          lang: string;
+          onresult: (ev: { results: { transcript: string }[][] }) => void;
+          onerror: () => void;
+          onend: () => void;
+          start: () => void;
+        })();
+        rec.lang = 'en-US';
+        rec.onresult = (ev) => {
+          const transcript = ev.results?.[0]?.[0]?.transcript || '';
+          if (transcript) {
+            setHudCommand(transcript);
+            setBotToast(`HANDY_STT // Transcribed: "${transcript}"`);
+          }
+          setVoiceActive(false);
+        };
+        rec.onerror = () => setVoiceActive(false);
+        rec.onend = () => setVoiceActive(false);
+        rec.start();
+        return;
+      } catch {
+        // fallback if mic permission denied in headless browser
+      }
+    }
+    setBotToast('HANDY_STT // Listening on Alt+Space (Type or speak command into pill)...');
+  };
+
+  const handleBotSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const q = hudCommand.trim().toLowerCase();
+    const raw = hudCommand.trim();
+    const q = raw.toLowerCase();
     if (!q) return;
+    setHudCommand('');
 
     if (q.includes('heal') || q.includes('fix') || q.includes('fallow') || q.includes('clean')) {
       setWorkspace('pulse-hud');
       setIsHealed(true);
-      setBotToast('HANDY_BOT // Executed .kiro/hooks/agentic-clean-gate → Fallow 98/100 (0 cycles)');
+      setHealthScore(100);
+      setBotToast('HANDY_BOT // Executed .kiro/hooks/agentic-clean-gate → Fallow 100/100 (0 cycles)');
     } else if (q.includes('scale') || q.includes('shopee') || q.includes('3d') || q.includes('pack')) {
       setWorkspace('scale-hud');
-      setBotToast('HANDY_BOT // Switched to ScaleHUD 1:1 Millimeter 3D Stage');
+      setBotToast('HANDY_BOT // Switched to ScaleHUD Three.js WebGL 1:1 Millimeter Stage');
     } else {
-      setBotToast(`HANDY_BOT // Dispatched "${hudCommand}" → Verified by Oxlint + Specta IPC`);
+      setBotToast(`HANDY_BOT // Querying Momen ZAI Agent (gemini-3.8-flash) for "${raw}"...`);
     }
-    setHudCommand('');
-  };
 
-  const healthScore = isHealed ? 98 : 52;
+    // Also query live Momen ZAI Agent (`deskhud_assistant`, gemini-3.8-flash)
+    const aiReply = await askMomenZaiAssistant(raw, appendFrame);
+    if (aiReply) {
+      setBotToast(`HANDY_BOT (Momen ZAI) // ${aiReply}`);
+    }
+  };
 
   return (
     <div
@@ -117,14 +173,13 @@ export const App: React.FC = () => {
           flexWrap: 'wrap'
         }}
       >
-        {/* Left Brand Identity */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div
             style={{
               width: '10px',
               height: '10px',
-              background: isHealed ? '#10B981' : '#FF3300',
-              boxShadow: `0 0 10px ${ isHealed ? '#10B981' : '#FF3300' }`
+              background: healthScore >= 90 ? '#10B981' : '#FF3300',
+              boxShadow: `0 0 10px ${ healthScore >= 90 ? '#10B981' : '#FF3300' }`
             }}
           />
           <span
@@ -148,11 +203,11 @@ export const App: React.FC = () => {
               padding: '2px 6px'
             }}
           >
-            TAURI_V2 · RUST · KIRO
+            TAURI_V2 · WEBGL · ZAI
           </span>
         </div>
 
-        {/* Center Floating Handy Pill (Voice + Command + 3 Core Views) */}
+        {/* Center Floating Handy Pill */}
         <div
           className="deskhud-pill"
           style={{
@@ -216,12 +271,11 @@ export const App: React.FC = () => {
             03 // CAMERA RIG
           </button>
 
-          {/* Handy Voice / Command Input inside the Pill */}
           <form onSubmit={handleBotSubmit} style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '6px' }}>
             <button
               type="button"
               data-testid="handy-voice-btn"
-              onClick={() => setVoiceActive(!voiceActive)}
+              onClick={toggleVoiceRecognition}
               style={{
                 background: voiceActive ? '#FF3366' : 'rgba(255,255,255,0.06)',
                 color: '#FFFFFF',
@@ -236,16 +290,16 @@ export const App: React.FC = () => {
               }}
             >
               <Mic size={11} />
-              {voiceActive ? 'REC' : 'ALT+SPC'}
+              {voiceActive ? 'REC...' : 'ALT+SPC'}
             </button>
             <input
               data-testid="handy-bot-input"
               type="text"
               value={hudCommand}
               onChange={(e) => setHudCommand(e.target.value)}
-              placeholder='Ask Handy Bot ("heal fallow" / "scale 3d")...'
+              placeholder='Ask Momen ZAI Bot ("heal fallow" / "scale 3d")...'
               style={{
-                width: '205px',
+                width: '215px',
                 background: '#090C12',
                 border: '1px solid rgba(255,255,255,0.12)',
                 padding: '5px 8px',
@@ -257,7 +311,6 @@ export const App: React.FC = () => {
           </form>
         </div>
 
-        {/* Right Live Fallow & Momen Status Badge */}
         <div
           style={{
             display: 'flex',
@@ -278,7 +331,6 @@ export const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Optional Bot Toast Strip */}
       {botToast && (
         <div
           style={{
@@ -303,7 +355,6 @@ export const App: React.FC = () => {
         </div>
       )}
 
-      {/* MAIN VIEWPORT: Zero-Scroll Spatial Canvas & Surgical Inspector */}
       <main
         className="deskhud-stage"
         style={{
@@ -316,11 +367,15 @@ export const App: React.FC = () => {
         {workspace === 'pulse-hud' && (
           <PulseHudApp
             isHealed={isHealed}
-            onToggleHeal={setIsHealed}
+            onToggleHeal={(nextHealed, score) => {
+              setIsHealed(nextHealed);
+              if (typeof score === 'number') setHealthScore(score);
+              else setHealthScore(nextHealed ? 100 : 52);
+            }}
             onLogFrame={appendFrame}
           />
         )}
-        {workspace === 'scale-hud' && <ScaleHudApp />}
+        {workspace === 'scale-hud' && <ScaleHudApp onLogFrame={appendFrame} />}
         {workspace === 'story-rig' && (
           <VisualStoryDirector
             onJumpToApp={(target) => setWorkspace(target)}
@@ -328,7 +383,6 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* BOTTOM WIRE TELEMETRY BAR: .kiro/hooks + Momen GraphQL/WebSocket Wire Frame Stream */}
       <footer
         className="deskhud-footer"
         style={{

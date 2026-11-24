@@ -1,6 +1,15 @@
 // packages/deskhud-skeleton/index.ts
-// Core Reusable Skeleton Engine for Kiroween 2026 (Skeleton Crew Track)
-// Powers both App 1 (apps/pulse-hud) and App 2 (apps/scale-hud)
+// Production Core Engine for DESKHUD_OS (Kiroween 2026 — Skeleton Crew)
+// Powers App 1 (apps/pulse-hud) and App 2 (apps/scale-hud)
+
+export interface SourceFileEntry {
+  id: string;
+  filename: string;
+  layer: 'ui' | 'controller' | 'skeleton-ipc' | 'rust-core' | 'momen-baas';
+  code: string;
+  x: number;
+  y: number;
+}
 
 export interface ModuleNode {
   id: string;
@@ -10,9 +19,13 @@ export interface ModuleNode {
   y: number;
   cyclomatic: number;
   cognitive: number;
+  exportsList: string[];
   deadExports: string[];
+  importsList: string[];
   hasRustUnwrap: boolean;
+  anyCount: number;
   loc: number;
+  diagnostics: { rule: string; severity: 'error' | 'warn'; message: string }[];
 }
 
 export interface DependencyEdge {
@@ -24,6 +37,8 @@ export interface DependencyEdge {
 
 export interface FallowGraphReport {
   healthScore: number;
+  nodes: ModuleNode[];
+  edges: DependencyEdge[];
   cycleEdges: DependencyEdge[];
   boundaryViolations: DependencyEdge[];
   totalDeadExports: number;
@@ -34,9 +49,153 @@ export interface FallowGraphReport {
 }
 
 /**
+ * Real AST/Lexical Static Analyzer that parses live TypeScript/Rust source buffers
+ * to compute cyclomatic/cognitive complexity, exports, imports, dead exports, and cycles.
+ */
+export function analyzeWorkspaceSourceFiles(files: SourceFileEntry[]): FallowGraphReport {
+  const fileMap = new Map<string, SourceFileEntry>();
+  files.forEach((f) => fileMap.set(f.id, f));
+
+  // 1. Parse exports, imports, and complexity metrics per file
+  const rawNodes: ModuleNode[] = files.map((file) => {
+    const code = file.code;
+    const lines = code.split('\n');
+    const loc = lines.filter((l) => l.trim().length > 0).length;
+
+    // Extract exported identifiers
+    const exportsList: string[] = [];
+    const expRegex = /export\s+(?:async\s+)?(?:function|const|let|type|interface|class)\s+([A-Za-z0-9_]+)/g;
+    let m: RegExpExecArray | null;
+    while ((m = expRegex.exec(code)) !== null) {
+      exportsList.push(m[1]);
+    }
+
+    // Extract imported module targets
+    const importsList: string[] = [];
+    const impRegex = /import\s+(?:type\s+)?(?:[^'"]+\s+from\s+)?['"]([^'"]+)['"]/g;
+    while ((m = impRegex.exec(code)) !== null) {
+      const spec = m[1];
+      for (const candidate of files) {
+        const stem = candidate.filename.replace(/\.(tsx?|rs|mjs|js)$/, '').split('/').pop()!;
+        if (
+          spec.includes(stem) ||
+          spec.includes(candidate.id) ||
+          (spec.includes('tauri') && candidate.layer === 'rust-core')
+        ) {
+          if (candidate.id !== file.id && !importsList.includes(candidate.id)) {
+            importsList.push(candidate.id);
+          }
+        }
+      }
+    }
+
+    // Compute real Cyclomatic & Cognitive Complexity from control-flow branching & nesting
+    let cyclomatic = 1;
+    let cognitive = 0;
+    let nesting = 0;
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('//') || trimmed.startsWith('/*')) continue;
+      const branchMatches = trimmed.match(/\b(if|for|while|case|catch)\b|&&|\|\||\?/g);
+      if (branchMatches) {
+        cyclomatic += branchMatches.length;
+        cognitive += branchMatches.length * (1 + Math.max(0, nesting));
+      }
+      const opens = (trimmed.match(/\{/g) || []).length;
+      const closes = (trimmed.match(/\}/g) || []).length;
+      nesting = Math.max(0, nesting + opens - closes);
+    }
+
+    const anyCount = (code.match(/:\s*any\b/g) || []).length;
+    const hasRustUnwrap = /\.unwrap\(\)|\.expect\(/.test(code);
+    const hasRawTauriInvoke = /window\.__TAURI__\.invoke/.test(code);
+
+    const diagnostics: { rule: string; severity: 'error' | 'warn'; message: string }[] = [];
+    if (anyCount > 0) {
+      diagnostics.push({
+        rule: 'oxlint(typescript/no-explicit-any)',
+        severity: 'error',
+        message: `${anyCount} explicit 'any' type(s) detected; use strict contract interfaces.`
+      });
+    }
+    if (hasRawTauriInvoke) {
+      diagnostics.push({
+        rule: 'oxlint(deskhud/no-untyped-ipc)',
+        severity: 'error',
+        message: 'Direct window.__TAURI__.invoke bypasses @deskhud/skeleton-ipc Specta contract.'
+      });
+    }
+    if (hasRustUnwrap) {
+      diagnostics.push({
+        rule: 'clippy::unwrap_used',
+        severity: 'error',
+        message: 'Rust .unwrap() can panic the tray daemon; return Result<T, HudErr> with #[specta::specta].'
+      });
+    }
+    if (cognitive > 10) {
+      diagnostics.push({
+        rule: 'fallow(cognitive-complexity)',
+        severity: 'warn',
+        message: `Cognitive complexity ${cognitive} exceeds steering threshold (max 10).`
+      });
+    }
+
+    return {
+      id: file.id,
+      label: file.filename,
+      layer: file.layer,
+      x: file.x,
+      y: file.y,
+      cyclomatic,
+      cognitive,
+      exportsList,
+      deadExports: [],
+      importsList,
+      hasRustUnwrap,
+      anyCount,
+      loc,
+      diagnostics
+    };
+  });
+
+  // 2. Cross-reference exports across all other files to find real Dead Exports
+  const entryExportAllowlist = new Set(['PulseHudApp', 'ScaleHudApp', 'HudViewProps', 'run_whisper_safe', 'onHotKey', 'useHudController', 'useHudState', 'invokeSpecta', 'recordAuditRun']);
+  rawNodes.forEach((node) => {
+    const otherCode = files
+      .filter((f) => f.id !== node.id)
+      .map((f) => f.code)
+      .join('\n');
+
+    node.deadExports = node.exportsList.filter((expName) => {
+      if (entryExportAllowlist.has(expName)) return false;
+      const refRegex = new RegExp(`\\b${expName}\\b`);
+      return !refRegex.test(otherCode);
+    });
+
+    if (node.deadExports.length > 0) {
+      node.diagnostics.push({
+        rule: 'fallow(dead-export)',
+        severity: 'warn',
+        message: `Unused export(s): ${node.deadExports.join(', ')}`
+      });
+    }
+  });
+
+  // 3. Build edges from parsed imports
+  const edges: DependencyEdge[] = [];
+  rawNodes.forEach((n) => {
+    n.importsList.forEach((targetId) => {
+      edges.push({ from: n.id, to: targetId });
+    });
+  });
+
+  return analyzeCodeGraph(rawNodes, edges);
+}
+
+/**
  * Deterministic static graph analyzer (models Fallow + Oxlint + Cargo Clippy rules).
  */
-export function analyzeCodeGraph(
+function analyzeCodeGraph(
   nodes: ModuleNode[],
   edges: DependencyEdge[]
 ): FallowGraphReport {
@@ -46,13 +205,11 @@ export function analyzeCodeGraph(
     adj.get(e.from)?.push(e.to);
   });
 
-  // Detect cycles via DFS back-edge check
   const cycleEdges: DependencyEdge[] = [];
   const boundaryViolations: DependencyEdge[] = [];
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 
   edges.forEach((edge) => {
-    // Check if 'to' can reach 'from'
     const visited = new Set<string>();
     const stack = [edge.to];
     let reachesBack = false;
@@ -81,19 +238,23 @@ export function analyzeCodeGraph(
   const totalDeadExports = nodes.reduce((acc, n) => acc + n.deadExports.length, 0);
   const maxCognitive = nodes.reduce((acc, n) => Math.max(acc, n.cognitive), 0);
   const rustPanicsCount = nodes.filter((n) => n.hasRustUnwrap).length;
-  const oxlintErrors = totalDeadExports + boundaryViolations.length + (maxCognitive > 15 ? 1 : 0);
+  const totalAny = nodes.reduce((acc, n) => acc + n.anyCount, 0);
+  const oxlintErrors = totalDeadExports + boundaryViolations.length + totalAny + (maxCognitive > 15 ? 1 : 0);
 
   const penalty =
     cycleEdges.length * 9 +
     boundaryViolations.length * 8 +
     totalDeadExports * 5 +
     rustPanicsCount * 10 +
+    totalAny * 4 +
     Math.max(0, maxCognitive - 10) * 0.7;
 
   const healthScore = Math.max(0, Math.min(100, Math.round(100 - penalty)));
 
   return {
     healthScore,
+    nodes,
+    edges,
     cycleEdges,
     boundaryViolations,
     totalDeadExports,
@@ -111,6 +272,8 @@ export interface MetricBox3D {
   heightMm: number;
   depthMm: number;
   color: string;
+  shapeKind?: 'tote' | 'mug' | 'can' | 'phone' | 'card' | 'laptop' | 'box';
+  textureDataUrl?: string;
 }
 
 export interface ParseMetricResult {
@@ -147,7 +310,6 @@ export function parseMetricDimensions(raw: string): ParseMetricResult {
     return 10;
   };
 
-  // Match explicit 3-axis triplet separated by x, *, ×, or axis labels
   const tripletRegex =
     /(\d+(?:\.\d+)?)\s*(mm|cm|in(?:ches|ch)?)?\s*(?:x|\*|×)\s*(?:[a-zA-Z]+\s*)?(\d+(?:\.\d+)?)\s*(mm|cm|in(?:ches|ch)?)?\s*(?:x|\*|×)\s*(?:[a-zA-Z]+\s*)?(\d+(?:\.\d+)?)\s*(mm|cm|in(?:ches|ch)?)?/i;
 
