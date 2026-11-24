@@ -1,0 +1,5 @@
+node_modules/
+.momen-mcp/
+.git/
+.env
+.env.*

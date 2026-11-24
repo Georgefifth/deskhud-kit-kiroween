@@ -1,0 +1,19 @@
+{
+  "name": "agentic-clean-gate",
+  "description": "Automatically runs Vite+ (vp check), Oxlint, Fallow graph audit (circular deps, dead code, complexity), and Property-Based Tests whenever Kiro edits an app or skeleton module.",
+  "trigger": {
+    "event": "onFileSave",
+    "patterns": [
+      "packages/deskhud-skeleton/**/*.ts",
+      "apps/pulse-hud/**/*.{ts,tsx}",
+      "apps/scale-hud/**/*.{ts,tsx}",
+      "src/**/*.{ts,tsx}"
+    ]
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "bash .kiro/hooks/run-clean-gate.sh"
+    }
+  ]
+}

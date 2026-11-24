@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+.env.*
+.momen-mcp/
+.vercel/
+.vercel

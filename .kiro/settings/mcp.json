@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "momen": {
+      "command": "npx",
+      "args": ["-y", "momen-mcp@2.8.4"],
+      "description": "Momen Headless BaaS (PostgreSQL, GraphQL, WebSocket, ZAI Agent, Static Hosting)"
+    },
+    "fallow": {
+      "command": "npx",
+      "args": ["-y", "fallow", "mcp"],
+      "description": "Fallow Codebase Intelligence MCP for TypeScript/JavaScript circular-dep, dead-code & complexity analysis"
+    }
+  }
+}
